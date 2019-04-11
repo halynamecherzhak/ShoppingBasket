@@ -23,12 +23,28 @@ class MainPageControlller extends  Controller{
 
     /**
      * @Route("/")
-     * @Method({"GET"})
+     * @Route("/products")
      */
     public function index(){
 
-        $articles = $this->getDoctrine()->getRepository(Product::class)->findAll();
-        return $this->render('products/products.html.twig', array('articles' => $articles));
+        $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
+        if ( !$products )
+        {
+            throw $this->createNotFoundException(
+                'No product found '
+            );
+        }
+        return $this->render('products/products.html.twig', array('products' => $products));
+    }
+
+    /**
+     * @Route("/cart")
+     * @Method({"GET"})
+     */
+    public function show(){
+
+        return $this->render('cart/cart.html.twig');
 
     }
+
 }

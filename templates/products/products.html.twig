@@ -3,9 +3,10 @@
 
 {% block body %}
 
+    <a href="/cart" class="btn btn-dark">CARD</a>
 
 
-    {% if articles %}
+    {% if products %}
         <table id="articles" class="table table-striped">
             <thead>
             <tr>
@@ -15,13 +16,17 @@
             </tr>
             </thead>
             <tbody>
-            {% for article in articles %}
+            {% for article in products %}
                 <tr>
                     <td>{{ article.name }}</td>
                     <td>{{ article.description }}</td>
                     <td>{{ article.price }}</td>
                     <td>
-                        <a href="" class="btn btn-dark">Add to the basket</a>
+                        <form action='{{ path('add_to_cart', {'product_id': article.getId()}) }}'>
+                            <button type="submit" class="btn btn-primary pull-right">
+                                <i class="fa fa-check-square"></i>Add To Cart
+                            </button>
+                        </form>
                     </td>
                 </tr>
             {% endfor %}
