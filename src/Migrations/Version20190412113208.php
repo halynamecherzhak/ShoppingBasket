@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190411224429 extends AbstractMigration
+final class Version20190412113208 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,8 +22,8 @@ final class Version20190411224429 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE cart (id INT AUTO_INCREMENT NOT NULL, total_prize NUMERIC(10, 0) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
-        $this->addSql('ALTER TABLE `order` CHANGE quantity quantity INT NOT NULL');
+        $this->addSql('CREATE TABLE basket (id INT AUTO_INCREMENT NOT NULL, product_id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB');
+        $this->addSql('DROP TABLE cart');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +31,7 @@ final class Version20190411224429 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE cart');
-        $this->addSql('ALTER TABLE `order` CHANGE quantity quantity VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci');
+        $this->addSql('CREATE TABLE cart (id INT AUTO_INCREMENT NOT NULL, total_price VARCHAR(255) NOT NULL COLLATE utf8mb4_unicode_ci, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('DROP TABLE basket');
     }
 }
