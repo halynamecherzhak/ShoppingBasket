@@ -54,14 +54,6 @@ class Product
         return $this;
     }
 
-//    public function setProductId(int $name): self
-//    {
-//        $this->name = $name;
-//
-//        return $this;
-//    }
-
-
     public function getDescription(): ?string
     {
         return $this->description;

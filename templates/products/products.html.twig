@@ -3,7 +3,7 @@
 
 {% block body %}
 
-    <a href="/cart" class="btn btn-dark">CARD</a>
+    <a href="/basket" class="btn btn-dark">Basket</a>
 
 
     {% if products %}
@@ -16,14 +16,14 @@
             </tr>
             </thead>
             <tbody>
-            {% for article in products %}
+            {% for item in products %}
                 <tr>
-                    <td>{{ article.name }}</td>
-                    <td>{{ article.description }}</td>
-                    <td>{{ article.price }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.price }}</td>
                     <td>
                         <p>
-                            <a href="{{ url('shopping_basket', {'product_id':article.getId()}) }}" class="btn btn-primary">Add to Cart</a>
+                            <a href="{{ url('shopping_basket', {'product_id':item.getId()}) }}" class="btn btn-primary">Add to Basket</a>
                         </p>
                     </td>
                 </tr>

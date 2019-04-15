@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BasketController extends Controller
 {
     /**
-     * @Route("/cart" , name="cart_list")
+     * @Route("/basket" , name="cart_list")
      */
     public function index(BasketRepository $repository)
     {
@@ -51,15 +51,8 @@ class BasketController extends Controller
     {
 
         $basket = new Basket();
-
         $em = $this->getDoctrine()->getManager();
-
-        $basket = $em->getRepository(Basket::class)->find($product_id);
-
-//        echo  $product_id;
-
-        echo $basket->setProductId($product_id);
-
+        $basket->setProductId($product_id);
         $em->persist($basket);
         $em->flush();
 
