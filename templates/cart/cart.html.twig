@@ -1,4 +1,30 @@
-{% block body %}
+{% extends 'base.html.twig' %}
+{% block title %}Basket{% endblock %}
 
-    <h1>Hello</h1>
+{% block body %}
+    <h1>Shopping Basket</h1>
+    {% if busketList %}
+        <table id="articles" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in busketList %}
+                <tr>
+                    <td>{{ item.getName()}}</td>
+                    <td>{{ item.Price()}}</td>
+                    <td>
+                        <a href="/product/delete/{{item.getId()}}" class="btn btn-danger delete-article" >Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No products to display</p>
+    {% endif %}
+    <a href="/emptyBasket" class="btn btn-dark">Clear Busket</a>
 {% endblock %}

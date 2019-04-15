@@ -36,6 +36,7 @@ class Product
      */
     private $category_id;
 
+
     public function getId(): ?int
     {
         return $this->product_id;
@@ -46,12 +47,20 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $product_id): self
     {
-        $this->name = $name;
+        $this->product_id = $product_id;
 
         return $this;
     }
+
+//    public function setProductId(int $name): self
+//    {
+//        $this->name = $name;
+//
+//        return $this;
+//    }
+
 
     public function getDescription(): ?string
     {
@@ -88,4 +97,6 @@ class Product
 
         return $this;
     }
+
+
 }
