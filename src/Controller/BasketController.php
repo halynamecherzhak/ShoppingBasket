@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Basket;
 use App\Entity\Product;
 use App\Repository\BasketRepository;
+use App\Repository\ProductRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,16 +32,25 @@ class BasketController extends Controller
      * @Route("/product/delete/{product_id}", name="product_delete")
      */
 
-    public function delete($product_id)
+    public function delete($product_id,BasketRepository $repository)
     {
-        $em = $this->getDoctrine()->getManager();
 
-        $post = $em->getRepository(Product::class)->find($product_id);
-
-        $em->remove($post);
-        $em->flush();
+        $busketList = $repository->deleteProductFromBasket($product_id);
 
         return $this->redirectToRoute('cart_list');
+
+    }
+
+    /**
+     * @Route("/emptyBasket")
+     */
+
+    public function deleteAllProductsFromBasket(BasketRepository $repository){
+
+        $busketList = $repository->deleteBasketList();
+
+        return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
+
     }
 
     /**

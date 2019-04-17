@@ -3,6 +3,8 @@
 
 {% block body %}
 
+    <h1>List of Products</h1>
+
     <a href="/basket" class="btn btn-dark">Basket</a>
 
 
@@ -13,6 +15,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Category Name</th>
             </tr>
             </thead>
             <tbody>
@@ -21,6 +24,7 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.price }}</td>
+                    <td></td>
                     <td>
                         <p>
                             <a href="{{ url('shopping_basket', {'product_id':item.getId()}) }}" class="btn btn-primary">Add to Basket</a>

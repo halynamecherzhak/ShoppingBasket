@@ -25,8 +25,10 @@ class MainPageControlller extends Controller
      * @Route("/")
      * @Route("/products" , name="show products")
      */
-    public function index()
+    public function index(ProductRepository $repository)
     {
+
+        //$products = $repository->showProductsList();
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         if (!$products) {
@@ -34,6 +36,7 @@ class MainPageControlller extends Controller
                 'No product found '
             );
         }
+
         return $this->render('products/products.html.twig', array('products' => $products));
     }
 
