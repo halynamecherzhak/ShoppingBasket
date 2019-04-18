@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Product;
+use Doctrine\ORM\Mapping\JoinColumn;
+use Doctrine\ORM\Mapping\ManyToOne;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\OrderRepository")
@@ -18,59 +19,42 @@ class Order
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="date", length=255)
      */
-    private $quantity;
+    private $date;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ManyToOne(targetEntity="App\Entity\User", inversedBy="orders")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $product;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $cart;
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getQuantity(): ?string
+    public function getDate(): ?string
     {
-        return $this->quantity;
+        return $this->date;
     }
 
-    public function setQuantity(string $quantity): self
+    public function setDate(string $date): self
     {
-        $this->quantity = $quantity;
+        $this->date = $date;
 
         return $this;
     }
 
-    public function getProduct(): ?string
+    public function getUser(): ?int
     {
-        return $this->product;
+        return $this->user;
     }
 
-    public function setProduct(string $product): self
+    public function setUser(int $user): self
     {
-        $this->product = $product;
+        $this->user = $user;
 
         return $this;
     }
-
-    public function getCart(): ?string
-    {
-        return $this->cart;
-    }
-
-    public function setCart(string $cart): self
-    {
-        $this->cart = $cart;
-
-        return $this;
-    }
-
 }

@@ -19,15 +19,4 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
-
-    public function showProductsList(){
-        return $this->createQueryBuilder('query')
-            ->select('p')
-            ->from(Product::class, 'p')
-            ->join(Category::class, 'c')
-            ->where('p.category_id = c.category_id')
-            ->getQuery()
-            ->getResult();
-    }
-
 }

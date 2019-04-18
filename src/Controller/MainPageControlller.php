@@ -10,7 +10,10 @@ namespace App\Controller;
 
 use App\Entity\Basket;
 use App\Entity\Product;
-
+use App\Entity\User;
+use App\Entity\Order;
+use App\Repository\OrderRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProductRepository;
@@ -25,10 +28,10 @@ class MainPageControlller extends Controller
      * @Route("/")
      * @Route("/products" , name="show products")
      */
-    public function index(ProductRepository $repository)
+    public function index(UserRepository $orderRepository)
     {
-
-        //$products = $repository->showProductsList();
+//        $orders = $orderRepository->getUser();
+//        print_r($orders);
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         if (!$products) {
@@ -37,7 +40,8 @@ class MainPageControlller extends Controller
             );
         }
 
-        return $this->render('products/products.html.twig', array('products' => $products));
+       return $this->render('products/products.html.twig', array('products' => $products));
     }
+
 
 }
