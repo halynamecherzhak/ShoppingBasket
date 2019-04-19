@@ -14,21 +14,44 @@ class Category
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $category_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $category_name;
+    private $name;
 
-    public function getCategoryId(): ?int
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="category")
+     */
+    private $products;
+
+    /**
+     * @return mixed
+     */
+    public function getProducts()
     {
-        return $this->category_id;
+        return $this->products;
     }
 
-    public function getCategoryName(): ?string
+    /**
+     * @param mixed $products
+     * @return Category
+     */
+    public function setProducts($products)
     {
-        return $this->category_name;
+        $this->products = $products;
+        return $this;
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     public function setName(string $name): self

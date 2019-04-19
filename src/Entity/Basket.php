@@ -18,29 +18,30 @@ class Basket
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $product_id;
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProductId(): ?int
+    private $containProducts;
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getContainProducts(): ArrayCollection
     {
-        return $this->product_id;
+        return $this->containProducts;
     }
 
-    public function setProductId(int $product_id): self
+    /**
+     * @param ArrayCollection $containProducts
+     * @return Basket
+     */
+    public function setContainProducts(ArrayCollection $containProducts): Basket
     {
-        $this->product_id = $product_id;
-
+        $this->containProducts = $containProducts;
         return $this;
     }
-
-    private $containProducts;
     /**
      * Constructor
      */

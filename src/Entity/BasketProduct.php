@@ -5,9 +5,10 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="BasketProductRepository")
  */
 class BasketProduct
 
@@ -19,14 +20,15 @@ class BasketProduct
      */
     private  $id;
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="containProducts")
+     * @JoinColumn(name="user_id", referencedColumnName="id")
      */
-    private $product_id;
+    private $product;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Basket", inversedBy="containProducts")
      */
-    private $basket_id;
+    private $basket;
 
     /**
      * @ORM\Column(type="integer")
@@ -36,36 +38,54 @@ class BasketProduct
     /**
      * @return mixed
      */
-    public function getProductId()
+    public function getId()
     {
-        return $this->product_id;
+        return $this->id;
     }
 
     /**
-     * @param mixed $product_id
+     * @param mixed $id
      * @return BasketProduct
      */
-    public function setProductId($product_id)
+    public function setId($id)
     {
-        $this->product_id = $product_id;
+        $this->id = $id;
         return $this;
     }
 
     /**
      * @return mixed
      */
-    public function getBasketId()
+    public function getProduct()
     {
-        return $this->basket_id;
+        return $this->product;
     }
 
     /**
-     * @param mixed $basket_id
+     * @param mixed $product
      * @return BasketProduct
      */
-    public function setBasketId($basket_id)
+    public function setProduct($product)
     {
-        $this->basket_id = $basket_id;
+        $this->product = $product;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBasket()
+    {
+        return $this->basket;
+    }
+
+    /**
+     * @param mixed $basket
+     * @return BasketProduct
+     */
+    public function setBasket($basket)
+    {
+        $this->basket = $basket;
         return $this;
     }
 

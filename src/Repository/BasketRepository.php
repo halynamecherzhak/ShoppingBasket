@@ -26,7 +26,7 @@ class BasketRepository extends ServiceEntityRepository
             ->select('p')
             ->from(Product::class, 'p')
             ->innerJoin(Basket::class, 'b')
-            ->where('p.product_id = b.product_id')
+            ->where('p.id = b.product_id')
             ->getQuery()
             ->getResult();
     }
@@ -39,12 +39,12 @@ class BasketRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function deleteProductFromBasket($product_id)
+    public function deleteProductFromBasket($id)
     {
         return $this->createQueryBuilder('query')
             ->delete(Basket::class,'b')
-            ->where('b.product_id = :product_id')
-            ->setParameter("product_id", $product_id)
+            ->where('b.product_id = :id')
+            ->setParameter("id", $id)
             ->getQuery()
             ->getResult();
     }

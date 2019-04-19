@@ -29,13 +29,13 @@ class BasketController extends Controller
 
 
     /**
-     * @Route("/product/delete/{product_id}", name="product_delete")
+     * @Route("/product/delete/{id}", name="product_delete")
      */
 
-    public function delete($product_id,BasketRepository $repository)
+    public function delete($id,BasketRepository $repository)
     {
 
-        $busketList = $repository->deleteProductFromBasket($product_id);
+        $busketList = $repository->deleteProductFromBasket($id);
 
         return $this->redirectToRoute('cart_list');
 
@@ -54,15 +54,15 @@ class BasketController extends Controller
     }
 
     /**
-     * @Route("/cart/add/{product_id}", name="shopping_basket", requirements={"product_id":"\d+"})
+     * @Route("/cart/add/{id}", name="shopping_basket", requirements={"id":"\d+"})
      * @Method({"GET", "POST"})
      */
-    public function addProductToBasket($product_id)
+    public function addProductToBasket($id)
     {
 
         $basket = new Basket();
         $em = $this->getDoctrine()->getManager();
-        $basket->setProductId($product_id);
+        $basket->setProductId($id);
         $em->persist($basket);
         $em->flush();
 
