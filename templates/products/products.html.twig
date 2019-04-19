@@ -15,6 +15,7 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
+                <th>Category</th>
             </tr>
             </thead>
             <tbody>
@@ -24,9 +25,10 @@
                     <td>{{ item.description }}</td>
                     <td>{{ item.price }}</td>
                     <td></td>
+                    <td></td>
                     <td>
                         <p>
-                            <a href="{{ url('shopping_basket', {'product_id':item.getId()}) }}" class="btn btn-primary">Add to Basket</a>
+                            <a href="{{ url('shopping_basket', {'id':item.getId()}) }}" class="btn btn-primary">Add to Basket</a>
                         </p>
                     </td>
                 </tr>

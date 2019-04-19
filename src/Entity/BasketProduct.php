@@ -21,8 +21,7 @@ class BasketProduct
     private  $id;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="containProducts")
-     * @JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    */
     private $product;
 
     /**

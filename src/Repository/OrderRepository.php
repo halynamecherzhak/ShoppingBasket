@@ -20,10 +20,9 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
-    public function getOrder()
-    {
-        return $this->createQueryBuilder('o')
-            ->select('date',Order::class)
+    public function  getOrder(){
+        return $this->createQueryBuilder('q')
+            ->select('q.date')
             ->getQuery()
             ->getResult();
     }

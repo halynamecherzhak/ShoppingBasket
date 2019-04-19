@@ -21,11 +21,17 @@ class UserRepository extends ServiceEntityRepository
     }
 
     public function  getUser(){
-        return $this->createQueryBuilder('query')
-            ->select('u.userName, o.date')
-            ->from(User::class, 'u')
-            ->join(Order::class,'o')
-            ->where('u.orders = o.user')
+//        return $this->createQueryBuilder('query')
+//            ->select('u.userName,u.address,o.date')
+//            ->from(User::class, 'u')
+//            ->join(Order::class,'o')
+//            ->where('u.id = o.user')
+//            ->getQuery()
+//            ->getResult();
+//    }
+        return $this->createQueryBuilder('q')
+            ->select('q.userName,q.address')
+            ->join('q.orders','o')
             ->getQuery()
             ->getResult();
     }
