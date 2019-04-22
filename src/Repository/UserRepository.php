@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
-use App\Entity\Order;
+use App\Entity\Orders;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -21,19 +22,10 @@ class UserRepository extends ServiceEntityRepository
     }
 
     public function  getUser(){
-//        return $this->createQueryBuilder('query')
-//            ->select('u.userName,u.address,o.date')
-//            ->from(User::class, 'u')
-//            ->join(Order::class,'o')
-//            ->where('u.id = o.user')
-//            ->getQuery()
-//            ->getResult();
-//    }
-        return $this->createQueryBuilder('q')
-            ->select('q.userName,q.address')
-            ->join('q.orders','o')
+        return $this->createQueryBuilder('u')
+            ->select(['u.userName','u.address','o.date'])
+            ->innerJoin(Orders::class,'o',Join::WITH,'u.id = o.user')
             ->getQuery()
             ->getResult();
     }
-
 }

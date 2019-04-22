@@ -3,7 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\OneToMany;
+use Doctrine\ORM\Mapping\OneToOne;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -38,10 +39,27 @@ class User
     private $phone;
 
     /**
-     * @OneToMany(targetEntity="App\Entity\Order", mappedBy="user")
+     * @return mixed
      */
-    private  $orders;
+    public function getBasket()
+    {
+        return $this->basket;
+    }
 
+    /**
+     * @param mixed $basket
+     * @return User
+     */
+    public function setBasket($basket)
+    {
+        $this->basket = $basket;
+        return $this;
+    }
+
+    /**
+     * @ORM\OneToOne(targetEntity="Basket", mappedBy="basket")
+     */
+    private $basket;
 
     public function getId(): ?int
     {
@@ -95,23 +113,4 @@ class User
 
         return $this;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getOrders()
-    {
-        return $this->orders;
-    }
-
-    /**
-     * @param mixed $orders
-     * @return User
-     */
-    public function setOrders($orders)
-    {
-        $this->orders = $orders;
-        return $this;
-    }
-
 }

@@ -19,15 +19,6 @@ class BasketProduct
      * @ORM\Column(type="integer")
      */
     private  $id;
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="containProducts")
-    */
-    private $product;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Basket", inversedBy="containProducts")
-     */
-    private $basket;
 
     /**
      * @ORM\Column(type="integer")
@@ -53,22 +44,14 @@ class BasketProduct
     }
 
     /**
-     * @return mixed
+     * @ORM\ManyToOne(targetEntity="Product", inversedBy="basketProducts")
      */
-    public function getProduct()
-    {
-        return $this->product;
-    }
+    protected $product;
 
     /**
-     * @param mixed $product
-     * @return BasketProduct
+     * @ORM\ManyToOne(targetEntity="Basket", inversedBy="basketProducts")
      */
-    public function setProduct($product)
-    {
-        $this->product = $product;
-        return $this;
-    }
+    protected $basket;
 
     /**
      * @return mixed
@@ -85,6 +68,24 @@ class BasketProduct
     public function setBasket($basket)
     {
         $this->basket = $basket;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProduct()
+    {
+        return $this->product;
+    }
+
+    /**
+     * @param mixed $product
+     * @return BasketProduct
+     */
+    public function setProduct($product)
+    {
+        $this->product = $product;
         return $this;
     }
 

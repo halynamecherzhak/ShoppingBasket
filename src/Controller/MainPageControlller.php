@@ -11,12 +11,12 @@ namespace App\Controller;
 use App\Entity\Basket;
 use App\Entity\Product;
 use App\Entity\User;
-use App\Entity\Order;
-use App\Repository\OrderRepository;
+use App\Repository\BasketProductRepository;
+use App\Repository\BasketRepository;
+use App\Repository\ProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\ProductRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -28,10 +28,14 @@ class MainPageControlller extends Controller
      * @Route("/")
      * @Route("/products" , name="show products")
      */
-    public function index(UserRepository $orderRepository)
+    public function index(BasketProductRepository $basketProductRepository, BasketRepository $basketRepository)
     {
-//        $orders = $orderRepository->getUser();
-//        print_r($orders);
+//        $basket= $basketProductRepository->getBasketProduct();
+//        var_dump($basket);
+//
+//        $userpr = $basketRepository-> getBasketUser();
+//        var_dump($userpr);
+
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         if (!$products) {
@@ -39,9 +43,26 @@ class MainPageControlller extends Controller
                 'No product found '
             );
         }
+        return $this->render('products/products.html.twig', array('products' => $products));
 
-       return $this->render('products/products.html.twig', array('products' => $products));
     }
 
+    /**
+     * @Route("/setUser")
+     */
+    public function setUser(){
+        $user = new User();
+        $user->setUserName('Pavlo');
+        $user->setAddress('Medodvoi Pechery');
+        $user->setEmail('pavlo_shostak@gmail.com');
+        $user->setPhone('9325');
 
+        $basket = new Basket();
+
+        $basket->setUser($user);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->persist($basket);
+        $entityManager->flush();
+    }
 }

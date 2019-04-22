@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\OneToOne;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -18,50 +19,64 @@ class Basket
      */
     private $id;
 
+    /**
+     * @ORM\OneToOne(targetEntity="User", inversedBy="basket")
+     */
+    private $user;
+
+
+    /** @ORM\OneToMany(targetEntity="BasketProduct", mappedBy="basket")
+     */
+    private $basketProducts;
+
+//    /**
+//     * Basket constructor.
+//     * @param $basketProducts
+//     */
+//    public function __construct($basketProducts)
+//    {
+//        $this->basketProducts = $basketProducts;
+//    }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    private $containProducts;
-
     /**
-     * @return ArrayCollection
+     * @return mixed
      */
-    public function getContainProducts(): ArrayCollection
+    public function getUser()
     {
-        return $this->containProducts;
+        return $this->user;
     }
 
     /**
-     * @param ArrayCollection $containProducts
+     * @param mixed $user
      * @return Basket
      */
-    public function setContainProducts(ArrayCollection $containProducts): Basket
+    public function setUser($user)
     {
-        $this->containProducts = $containProducts;
-        return $this;
-    }
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->containProducts = new ArrayCollection();
-    }
-
-    /**
-     * Set containProducts
-     *
-     * @param Product $containProducts
-     *
-     * @return Basket
-     */
-    public function addProduct(Product $containProducts)
-    {
-        $this->containProducts->add($containProducts);
+        $this->user = $user;
         return $this;
     }
 
 
+    /**
+     * @return mixed
+     */
+    public function getBasketProducts()
+    {
+        return $this->basketProducts;
+    }
+
+    /**
+     * @param mixed $basketProducts
+     * @return Basket
+     */
+    public function setBasketProducts($basketProducts)
+    {
+        $this->basketProducts = $basketProducts;
+        return $this;
+    }
 }

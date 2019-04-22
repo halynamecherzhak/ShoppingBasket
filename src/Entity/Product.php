@@ -14,7 +14,7 @@ class Product
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $product_id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -31,9 +31,39 @@ class Product
      */
     private $price;
 
+    /** @ORM\OneToMany(targetEntity="BasketProduct", mappedBy="product") */
+    protected $basketProducts;
+
+//    /**
+//     * Product constructor.
+//     * @param $basketProducts
+//     */
+//    public function __construct($basketProducts)
+//    {
+//        $this->basketProducts = $basketProducts;
+//    }
+
+    /**
+     * @return mixed
+     */
+    public function getBasketProducts()
+    {
+        return $this->basketProducts;
+    }
+
+    /**
+     * @param mixed $basketProducts
+     * @return Product
+     */
+    public function setBasketProducts($basketProducts)
+    {
+        $this->basketProducts = $basketProducts;
+        return $this;
+    }
+
     public function getId(): ?int
     {
-        return $this->product_id;
+        return $this->id;
     }
 
     public function getName(): ?string
@@ -41,9 +71,9 @@ class Product
         return $this->name;
     }
 
-    public function setName(string $product_id): self
+    public function setName(string $name): self
     {
-        $this->product_id = $product_id;
+        $this->name = $name;
 
         return $this;
     }
