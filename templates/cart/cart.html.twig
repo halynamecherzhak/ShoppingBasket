@@ -15,11 +15,11 @@
             <tbody>
             {% for item in busketList %}
                 <tr>
-                    {#<td>{{ item.getName()}}</td>#}
-                    {#<td>{{ item.Price()}}</td>#}
-                    {#<td>#}
-                        {#<a href="/product/delete/{{item.getId()}}" class="btn btn-danger delete-article" >Delete</a>#}
-                    {#</td>#}
+                    <td> {{ item.getProduct().getName() }}</td>
+                    <td>{{ item.Price()}}</td>
+                    <td>
+                        <a href="/product/delete/{{item.getId()}}" class="btn btn-danger delete-article" >Delete</a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

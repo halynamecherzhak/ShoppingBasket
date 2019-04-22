@@ -21,13 +21,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class BasketController extends Controller
 {
-
     /**
      * @Route("/basket" , name="cart_list")
      */
     public function index(BasketProductRepository $repository)
     {
         $busketList = $repository->showBasketList();
+
         var_dump($busketList);
 
         return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
@@ -71,10 +71,19 @@ class BasketController extends Controller
 
     public function delete($id, BasketProductRepository $repository)
     {
-
         $busketList = $repository->deleteProductFromBasketProduct($id);
 
         return $this->redirectToRoute('cart_list');
 
     }
+
+    /**
+     * @Route("/emptyBasket")
+     */
+    public function deleteAllProductsFromBasket(BasketProductRepository $repository){
+        $busketList = $repository->deleteBasketProductList();
+        return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
+    }
+
+
 }

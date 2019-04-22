@@ -30,11 +30,11 @@ class MainPageControlller extends Controller
      */
     public function index(BasketProductRepository $basketProductRepository, BasketRepository $basketRepository)
     {
-//        $basket= $basketProductRepository->getBasketProduct();
-//        var_dump($basket);
-//
-//        $userpr = $basketRepository-> getBasketUser();
-//        var_dump($userpr);
+        $basket= $basketProductRepository->getBasketProduct();
+        var_dump($basket);
+
+        $user = $basketRepository-> getBasketUser();
+        var_dump($user);
 
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
@@ -45,24 +45,5 @@ class MainPageControlller extends Controller
         }
         return $this->render('products/products.html.twig', array('products' => $products));
 
-    }
-
-    /**
-     * @Route("/setUser")
-     */
-    public function setUser(){
-        $user = new User();
-        $user->setUserName('Pavlo');
-        $user->setAddress('Medodvoi Pechery');
-        $user->setEmail('pavlo_shostak@gmail.com');
-        $user->setPhone('9325');
-
-        $basket = new Basket();
-
-        $basket->setUser($user);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($user);
-        $entityManager->persist($basket);
-        $entityManager->flush();
     }
 }
