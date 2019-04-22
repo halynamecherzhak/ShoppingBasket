@@ -17,7 +17,6 @@ use App\Repository\BasketProductRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 
 class BasketController extends Controller
 {
@@ -80,8 +79,10 @@ class BasketController extends Controller
     /**
      * @Route("/emptyBasket")
      */
-    public function deleteAllProductsFromBasket(BasketProductRepository $repository){
+    public function deleteAllProductsFromBasket(BasketProductRepository $repository, BasketRepository $basketRepository)
+    {
         $busketList = $repository->deleteBasketProductList();
+        $busketList = $basketRepository->deleteBasket();
         return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
     }
 

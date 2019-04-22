@@ -31,5 +31,13 @@ class BasketRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function deleteBasket()
+    {
+        return $this->createQueryBuilder('b')
+            ->delete(Basket::class, 'b')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 }
