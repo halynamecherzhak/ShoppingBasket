@@ -4,11 +4,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
- * @ORM\Entity(repositoryClass="BasketProductRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\BasketProductRepository")
  */
 class BasketProduct
 
@@ -105,6 +103,12 @@ class BasketProduct
     {
         $this->quantity = $quantity;
         return $this;
+    }
+
+    public  function  addQuantity(){
+
+        $this->quantity++;
+        return $this->quantity;
     }
 
 }

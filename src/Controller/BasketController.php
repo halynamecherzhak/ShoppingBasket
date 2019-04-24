@@ -33,22 +33,23 @@ class BasketController extends Controller
     }
 
     /**
-     * @Route("/cart/add/{id}", name="shopping_basket", requirements={"id":"\d+"})
+     * @Route("/cart/add/{basketId}/{productId}", name="shopping_basket", requirements={"id":"\d+"})
      * @Method({"GET", "POST"})
+     *
+     * @param $basketId
+     * @param $productId
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductToBasket($id)
+    public function addProductToBasket($basketId, $productId)
     {
+        /** @var BasketProductRepository $basketProductRepo */
+        $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
+        $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
+        $basketProduct->addQuantity();
 
-        $basketProduct = new BasketProduct();
-
-        $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
-
-        $basketProduct->setQuantity(8);
-        $basketProduct->setProduct($product);
-
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($basketProduct);
-        $entityManager->flush();
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($basketProduct);
+        $em->flush();
 
         return $this->redirectToRoute('cart_list');
     }

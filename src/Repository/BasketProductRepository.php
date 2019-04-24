@@ -2,7 +2,8 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityRepository;
+
+use App\Entity\Basket;
 use App\Entity\Product;
 use App\Entity\BasketProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -21,10 +22,11 @@ class BasketProductRepository extends ServiceEntityRepository
         parent::__construct($registry, BasketProduct::class);
     }
 
-    public function  getBasketProduct(){
+    public function getBasketProduct()
+    {
         return $this->createQueryBuilder('bp')
             ->select('bp.quantity, p.name')
-            ->join(Product::class,'p')
+            ->join(Product::class, 'p')
             ->where('p.id = bp.product')
             ->getQuery()
             ->getResult();
@@ -43,7 +45,7 @@ class BasketProductRepository extends ServiceEntityRepository
     public function deleteProductFromBasketProduct($id)
     {
         return $this->createQueryBuilder('query')
-            ->delete(BasketProduct::class,'b')
+            ->delete(BasketProduct::class, 'b')
             ->where('b.product = :id')
             ->setParameter("id", $id)
             ->getQuery()
@@ -58,5 +60,30 @@ class BasketProductRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param $cartId
+     * @param $productId
+     * @return BasketProduct
+     */
+    public function findOneOrCreate($cartId, $productId)
+    {
+        $existingProduct =  $this->createQueryBuilder('bp')
+            ->select('bp')
+            ->where('bp.product = :cartId')
+            ->andWhere('bp.basket = :productId')
+            ->setParameter("cartId", $cartId)
+            ->setParameter("productId", $productId)
+            ->getQuery()
+            ->getResult();
 
+        if (!$existingProduct) {
+            // create BP
+            $basketProduct = new BasketProduct();
+            $basketProduct->setQuantity(8);
+
+            // set proxies
+        }
+
+        return $existingProduct;
+    }
 }

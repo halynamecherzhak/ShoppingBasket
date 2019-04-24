@@ -34,15 +34,6 @@ class Product
     /** @ORM\OneToMany(targetEntity="BasketProduct", mappedBy="product") */
     protected $basketProducts;
 
-//    /**
-//     * Product constructor.
-//     * @param $basketProducts
-//     */
-//    public function __construct($basketProducts)
-//    {
-//        $this->basketProducts = $basketProducts;
-//    }
-
     /**
      * @return mixed
      */
