@@ -38,26 +38,15 @@ class BasketController extends Controller
      */
     public function addProductToBasket($id)
     {
-        $user = new User();
-        $user->setUserName('Lida');
-        $user->setAddress('Medodvoi Pechery');
-        $user->setEmail('lida_shostak@gmail.com');
-        $user->setPhone('1596');
-
-        $basket = new Basket();
-        $basket->setUser($user);
 
         $basketProduct = new BasketProduct();
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($id);
 
-        $basketProduct->setBasket($basket);
         $basketProduct->setQuantity(8);
         $basketProduct->setProduct($product);
 
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($user);
-        $entityManager->persist($basket);
         $entityManager->persist($basketProduct);
         $entityManager->flush();
 
@@ -85,6 +74,5 @@ class BasketController extends Controller
         $busketList = $basketRepository->deleteBasket();
         return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
     }
-
 
 }

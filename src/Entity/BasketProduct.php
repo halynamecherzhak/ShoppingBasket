@@ -107,5 +107,4 @@ class BasketProduct
         return $this;
     }
 
-
 }

@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-use App\Entity\Orders;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -23,8 +22,16 @@ class UserRepository extends ServiceEntityRepository
 
     public function  getUser(){
         return $this->createQueryBuilder('u')
-            ->select(['u.userName','u.address','o.date'])
-            ->innerJoin(Orders::class,'o',Join::WITH,'u.id = o.user')
+            ->select('u.userName','u.address')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getUserById($id)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.id')
+            ->where('u.id = :id')
+            ->setParameter("id", $id)
             ->getQuery()
             ->getResult();
     }

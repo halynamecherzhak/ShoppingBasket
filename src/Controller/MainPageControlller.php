@@ -9,6 +9,7 @@
 namespace App\Controller;
 
 use App\Entity\Basket;
+use App\Entity\BasketProduct;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\BasketProductRepository;
@@ -30,10 +31,10 @@ class MainPageControlller extends Controller
      */
     public function index(BasketProductRepository $basketProductRepository, BasketRepository $basketRepository)
     {
-        $basket= $basketProductRepository->getBasketProduct();
+        $basket = $basketProductRepository->getBasketProduct();
         var_dump($basket);
 
-        $user = $basketRepository-> getBasketUser();
+        $user = $basketRepository->getBasketUser();
         var_dump($user);
 
 
@@ -45,5 +46,37 @@ class MainPageControlller extends Controller
         }
         return $this->render('products/products.html.twig', array('products' => $products));
 
+    }
+
+    /**
+     * @Route("/user/{id}", name="get_user", requirements={"id":"\d+"})
+     * @Method({"GET", "POST"})
+     */
+    public function getBasketByUserId($id, BasketProductRepository $basketProductRepository,UserRepository $userRepository)
+    {
+        #$user = $this->getDoctrine()->getRepository(User::class)->find($id);
+
+        $user_basket = $this->getDoctrine()
+            ->getRepository(Basket::class)
+            ->find($id);
+
+        if ($user_basket) {
+//            $user_show= $userRepository->getUser();
+//            var_dump($user_show);
+
+            //show busket for user{id}
+            $busketList = $basketProductRepository->showBasketList();
+            var_dump($busketList);
+
+        } else {
+            $basket = new Basket();
+            $basket->setUser(2);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($basket);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('cart_list');
+      }
+        return new Response();
     }
 }

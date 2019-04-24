@@ -28,7 +28,7 @@ class Basket
     /** @ORM\OneToMany(targetEntity="BasketProduct", mappedBy="basket")
      */
     private $basketProducts;
-
+//
 //    /**
 //     * Basket constructor.
 //     * @param $basketProducts

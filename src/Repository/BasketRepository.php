@@ -40,4 +40,26 @@ class BasketRepository extends ServiceEntityRepository
     }
 
 
+    /**
+     * @Route("/user/{id}", name="get_user", requirements={"id":"\d+"})
+     * @Method({"GET", "POST"})
+     */
+    public function getBasketByUserId($id, BasketProductRepository $basketProductRepository)
+    {
+        // $user= $basketRepository->getUserById($id);
+        // $user = $this->getDoctrine()->getRepository(User::class)->find($id);
+
+        $user_basket = $this->getDoctrine()
+            ->getRepository(Basket::class)
+            ->find($id);
+
+        if ($user_basket) {
+            //show busket for user{id}
+            $busketList = $basketProductRepository->showBasketList();
+            var_dump($busketList);
+
+        }
+        return new Response();
+    }
+
 }
