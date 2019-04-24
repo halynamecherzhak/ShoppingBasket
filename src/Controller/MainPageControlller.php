@@ -52,7 +52,7 @@ class MainPageControlller extends Controller
      * @Route("/user/{id}", name="get_user", requirements={"id":"\d+"})
      * @Method({"GET", "POST"})
      */
-    public function getBasketByUserId($id, BasketProductRepository $basketProductRepository,UserRepository $userRepository)
+    public function getBasketByUserId($id, BasketProductRepository $basketProductRepository)
     {
         #$user = $this->getDoctrine()->getRepository(User::class)->find($id);
 
@@ -61,8 +61,6 @@ class MainPageControlller extends Controller
             ->find($id);
 
         if ($user_basket) {
-//            $user_show= $userRepository->getUser();
-//            var_dump($user_show);
 
             //show busket for user{id}
             $busketList = $basketProductRepository->showBasketList();
@@ -70,13 +68,12 @@ class MainPageControlller extends Controller
 
         } else {
             $basket = new Basket();
-            $basket->setUser(2);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($basket);
             $entityManager->flush();
 
             return $this->redirectToRoute('cart_list');
-      }
+        }
         return new Response();
     }
 }
