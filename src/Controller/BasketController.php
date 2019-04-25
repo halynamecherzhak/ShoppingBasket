@@ -33,7 +33,7 @@ class BasketController extends Controller
     }
 
     /**
-     * @Route("/cart/add/{basketId}/{productId}", name="shopping_basket", requirements={"id":"\d+"})
+     * @Route("/cart/add/{basketId}/{productId}", name="shopping_basket")
      * @Method({"GET", "POST"})
      *
      * @param $basketId
@@ -45,6 +45,8 @@ class BasketController extends Controller
         /** @var BasketProductRepository $basketProductRepo */
         $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
         $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
+
+
         $basketProduct->addQuantity();
 
         $em = $this->getDoctrine()->getManager();

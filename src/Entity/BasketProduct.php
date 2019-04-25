@@ -21,7 +21,7 @@ class BasketProduct
     /**
      * @ORM\Column(type="integer")
      */
-    private $quantity;
+    private $quantity =0;
 
     /**
      * @return mixed
@@ -108,7 +108,7 @@ class BasketProduct
     public  function  addQuantity(){
 
         $this->quantity++;
-        return $this->quantity;
+        return $this;
     }
 
 }

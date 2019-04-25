@@ -61,17 +61,17 @@ class BasketProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $cartId
+     * @param $basketId
      * @param $productId
      * @return BasketProduct
      */
-    public function findOneOrCreate($cartId, $productId)
+    public function findOneOrCreate($basketId, $productId)
     {
         $existingProduct =  $this->createQueryBuilder('bp')
-            ->select('bp')
-            ->where('bp.product = :cartId')
-            ->andWhere('bp.basket = :productId')
-            ->setParameter("cartId", $cartId)
+            ->select('bp.id')
+            ->andWhere('bp.basket = :basketId')
+            ->andWhere('bp.product = :productId')
+            ->setParameter("basketId", $basketId)
             ->setParameter("productId", $productId)
             ->getQuery()
             ->getResult();
@@ -79,7 +79,7 @@ class BasketProductRepository extends ServiceEntityRepository
         if (!$existingProduct) {
             // create BP
             $basketProduct = new BasketProduct();
-            $basketProduct->setQuantity(8);
+            #$basketProduct->setQuantity(8);
 
             // set proxies
         }
