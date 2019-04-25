@@ -22,6 +22,17 @@ class BasketProductRepository extends ServiceEntityRepository
         parent::__construct($registry, BasketProduct::class);
     }
 
+    public function getTotalPrice(){
+      $totalprice =  $this->createQueryBuilder('bp')
+            ->select( 'SUM(p.price) as totalprice')
+            ->join(Product::class, 'p')
+            ->where('p.id = bp.product')
+            ->getQuery()
+            ->getSingleResult();
+      return $totalprice;
+
+    }
+
     public function getBasketProduct()
     {
         return $this->createQueryBuilder('bp')
@@ -30,12 +41,13 @@ class BasketProductRepository extends ServiceEntityRepository
             ->where('p.id = bp.product')
             ->getQuery()
             ->getResult();
+
     }
 
     public function showBasketList()
     {
         return $this->createQueryBuilder('bp')
-            ->select('p.name,p.price')
+            ->select('p.name,p.price,bp.quantity')
             ->innerJoin(Product::class, 'p')
             ->where('p.id = bp.product')
             ->getQuery()
@@ -65,25 +77,38 @@ class BasketProductRepository extends ServiceEntityRepository
      * @param $productId
      * @return BasketProduct
      */
+
     public function findOneOrCreate($basketId, $productId)
     {
         $existingProduct =  $this->createQueryBuilder('bp')
-            ->select('bp.id')
             ->andWhere('bp.basket = :basketId')
             ->andWhere('bp.product = :productId')
             ->setParameter("basketId", $basketId)
             ->setParameter("productId", $productId)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
 
         if (!$existingProduct) {
             // create BP
+            //$user=1;
+            $basket = new Basket();
+           // $basket->setUser($user);
+
             $basketProduct = new BasketProduct();
-            #$basketProduct->setQuantity(8);
+//            $basketProduct->setBasket($basketId);
+//            $basketProduct->setProduct($productId);
+//            $basketProduct->setBasket(2);
+//            $basketProduct->setProduct(2);
+
+            var_dump( $basketProduct);
+            echo "<br>";
+            return $basketProduct;
 
             // set proxies
         }
 
+//        dump($existingProduct);
+//        die;
         return $existingProduct;
     }
 }

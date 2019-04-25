@@ -28,15 +28,30 @@ class Basket
     /** @ORM\OneToMany(targetEntity="BasketProduct", mappedBy="basket")
      */
     private $basketProducts;
-//
-//    /**
-//     * Basket constructor.
-//     * @param $basketProducts
-//     */
-//    public function __construct($basketProducts)
-//    {
-//        $this->basketProducts = $basketProducts;
-//    }
+
+    /**
+     * @ORM\Column(type="decimal")
+     */
+    private $total_price;
+
+    /**
+     * @return mixed
+     */
+    public function getTotalPrice()
+    {
+        return $this->total_price;
+    }
+
+    /**
+     * @param mixed $total_price
+     * @return Basket
+     */
+    public function setTotalPrice($total_price)
+    {
+        $this->total_price = $total_price;
+        return $this;
+    }
+
 
     public function getId(): ?int
     {

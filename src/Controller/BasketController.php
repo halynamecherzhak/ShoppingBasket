@@ -27,13 +27,18 @@ class BasketController extends Controller
     {
         $busketList = $repository->showBasketList();
 
-        var_dump($busketList);
+        $totalprice = $repository->getTotalPrice();
+
+        $data = json_encode($busketList,true);
+
+        var_dump($data);
+        var_dump($totalprice);
 
         return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
     }
 
     /**
-     * @Route("/cart/add/{basketId}/{productId}", name="shopping_basket")
+     * @Route("/cart/add/{basketId}/{productId}", name="shopping_basket",requirements={"basketId":"\d+"},requirements={"productId":"\d+"})
      * @Method({"GET", "POST"})
      *
      * @param $basketId
@@ -46,6 +51,7 @@ class BasketController extends Controller
         $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
         $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
 
+        var_dump($basketProduct);
 
         $basketProduct->addQuantity();
 
