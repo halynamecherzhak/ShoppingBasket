@@ -8,6 +8,10 @@ use App\Entity\Product;
 use App\Entity\BasketProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityManager;
+
 
 /**
  * @method BasketProduct|null find($id, $lockMode = null, $lockVersion = null)
@@ -22,14 +26,15 @@ class BasketProductRepository extends ServiceEntityRepository
         parent::__construct($registry, BasketProduct::class);
     }
 
-    public function getTotalPrice(){
-      $totalprice =  $this->createQueryBuilder('bp')
-            ->select( 'SUM(p.price) as totalprice')
+    public function getTotalPrice()
+    {
+        $totalprice = $this->createQueryBuilder('bp')
+            ->select('SUM(p.price) as totalprice')
             ->join(Product::class, 'p')
             ->where('p.id = bp.product')
             ->getQuery()
             ->getSingleResult();
-      return $totalprice;
+        return $totalprice;
 
     }
 
@@ -80,7 +85,7 @@ class BasketProductRepository extends ServiceEntityRepository
 
     public function findOneOrCreate($basketId, $productId)
     {
-        $existingProduct =  $this->createQueryBuilder('bp')
+        $existingProduct = $this->createQueryBuilder('bp')
             ->andWhere('bp.basket = :basketId')
             ->andWhere('bp.product = :productId')
             ->setParameter("basketId", $basketId)
@@ -89,26 +94,18 @@ class BasketProductRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
 
         if (!$existingProduct) {
+            $em = $this->getEntityManager();
             // create BP
-            //$user=1;
-            $basket = new Basket();
-           // $basket->setUser($user);
-
             $basketProduct = new BasketProduct();
-//            $basketProduct->setBasket($basketId);
-//            $basketProduct->setProduct($productId);
-//            $basketProduct->setBasket(2);
-//            $basketProduct->setProduct(2);
 
-            var_dump( $basketProduct);
-            echo "<br>";
+            $item = $em->getReference(Basket::class, $basketId);
+            $basketProduct->setBasket($item);
+
+            $item2 = $em->getReference(Product::class, $productId);
+            $basketProduct->setProduct($item2);
+
             return $basketProduct;
-
-            // set proxies
         }
-
-//        dump($existingProduct);
-//        die;
         return $existingProduct;
     }
 }

@@ -9,13 +9,9 @@
 namespace App\Controller;
 
 use App\Entity\Basket;
-use App\Entity\BasketProduct;
 use App\Entity\Product;
-use App\Entity\User;
 use App\Repository\BasketProductRepository;
 use App\Repository\BasketRepository;
-use App\Repository\ProductRepository;
-use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;

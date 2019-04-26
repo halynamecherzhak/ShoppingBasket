@@ -29,7 +29,7 @@ class BasketController extends Controller
 
         $totalprice = $repository->getTotalPrice();
 
-        $data = json_encode($busketList,true);
+        $data = json_encode($busketList, true);
 
         var_dump($data);
         var_dump($totalprice);
@@ -49,9 +49,8 @@ class BasketController extends Controller
     {
         /** @var BasketProductRepository $basketProductRepo */
         $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
-        $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
 
-        var_dump($basketProduct);
+        $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
 
         $basketProduct->addQuantity();
 
