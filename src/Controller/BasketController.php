@@ -22,19 +22,25 @@ class BasketController extends Controller
 {
     /**
      * @Route("/basket" , name="cart_list")
+     *
+     * @param BasketProductRepository $repository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(BasketProductRepository $repository)
     {
-        $busketList = $repository->showBasketList();
+        $price=0;
+        array_map(function ($item) use(&$price)
+        {
+            $price += $item['price'];
+            return $price;
+        }, $repository->getBasketList());
 
-        $totalprice = $repository->getTotalPrice();
+        $data = $repository->getBasketList();
+        array_push($data,"totalPrice",$price );
 
-        $data = json_encode($busketList, true);
+        print_r($data);
 
-        var_dump($data);
-        var_dump($totalprice);
-
-        return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
+        return $this->render('cart/cart.html.twig', array('busketList' => $data, 'price' => $price));
     }
 
     /**
@@ -63,8 +69,11 @@ class BasketController extends Controller
 
     /**
      * @Route("/product/delete/{id}", name="product_delete")
+     *
+     * @param $id
+     * @param BasketProductRepository $repository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-
     public function delete($id, BasketProductRepository $repository)
     {
         $busketList = $repository->deleteProductFromBasketProduct($id);
@@ -75,6 +84,10 @@ class BasketController extends Controller
 
     /**
      * @Route("/emptyBasket")
+     *
+     * @param BasketProductRepository $repository
+     * @param BasketRepository $basketRepository
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function deleteAllProductsFromBasket(BasketProductRepository $repository, BasketRepository $basketRepository)
     {

@@ -14,7 +14,6 @@ use App\Repository\BasketProductRepository;
 use App\Repository\BasketRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -28,11 +27,10 @@ class MainPageControlller extends Controller
     public function index(BasketProductRepository $basketProductRepository, BasketRepository $basketRepository)
     {
         $basket = $basketProductRepository->getBasketProduct();
-        var_dump($basket);
+        //var_dump($basket);
 
         $user = $basketRepository->getBasketUser();
-        var_dump($user);
-
+        //var_dump($user);
 
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
         if (!$products) {
@@ -57,10 +55,9 @@ class MainPageControlller extends Controller
             ->find($id);
 
         if ($user_basket) {
-
             //show busket for user{id}
-            $busketList = $basketProductRepository->showBasketList();
-            var_dump($busketList);
+            $busketList = $basketProductRepository->getBasketList();
+            //var_dump($busketList);
 
         } else {
             $basket = new Basket();

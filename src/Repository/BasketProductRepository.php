@@ -8,9 +8,6 @@ use App\Entity\Product;
 use App\Entity\BasketProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityManager;
 
 
 /**
@@ -35,7 +32,6 @@ class BasketProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleResult();
         return $totalprice;
-
     }
 
     public function getBasketProduct()
@@ -46,10 +42,9 @@ class BasketProductRepository extends ServiceEntityRepository
             ->where('p.id = bp.product')
             ->getQuery()
             ->getResult();
-
     }
 
-    public function showBasketList()
+    public function getBasketList()
     {
         return $this->createQueryBuilder('bp')
             ->select('p.name,p.price,bp.quantity')
@@ -98,11 +93,11 @@ class BasketProductRepository extends ServiceEntityRepository
             // create BP
             $basketProduct = new BasketProduct();
 
-            $item = $em->getReference(Basket::class, $basketId);
-            $basketProduct->setBasket($item);
+            $basket = $em->getReference(Basket::class, $basketId);
+            $basketProduct->setBasket($basket);
 
-            $item2 = $em->getReference(Product::class, $productId);
-            $basketProduct->setProduct($item2);
+            $product = $em->getReference(Product::class, $productId);
+            $basketProduct->setProduct($product);
 
             return $basketProduct;
         }

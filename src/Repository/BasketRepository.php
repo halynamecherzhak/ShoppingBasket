@@ -55,7 +55,7 @@ class BasketRepository extends ServiceEntityRepository
 
         if ($user_basket) {
             //show busket for user{id}
-            $busketList = $basketProductRepository->showBasketList();
+            $busketList = $basketProductRepository->getBasketList();
             var_dump($busketList);
 
         }
