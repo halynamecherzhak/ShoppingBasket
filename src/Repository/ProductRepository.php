@@ -2,7 +2,9 @@
 
 namespace App\Repository;
 
-use App\Entity\Category;
+use App\Entity\Basket;
+use App\Entity\BasketProduct;
+use App\Entity\User;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -25,6 +27,18 @@ class ProductRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->select(['p.name','c.name'])
             ->innerJoin(Category::class,'c',Join::WITH,'p.id = c.products')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function  getBasketProductsListByUserId($id){
+        return $this->createQueryBuilder('p')
+            ->select('p.name, p.price, bp.quantity')
+            ->innerJoin(BasketProduct::class,'bp',Join::WITH,'p.id = bp.product')
+            ->innerJoin(Basket::class,'b',Join::WITH,'b.id = bp.basket')
+            ->innerJoin(User::class,'u',Join::WITH,'u.id = b.user')
+            ->where("u.id = :id")
+            ->setParameter("id", $id)
             ->getQuery()
             ->getResult();
     }

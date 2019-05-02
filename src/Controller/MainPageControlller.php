@@ -10,8 +10,11 @@ namespace App\Controller;
 
 use App\Entity\Basket;
 use App\Entity\Product;
+use App\Entity\User;
 use App\Repository\BasketProductRepository;
 use App\Repository\BasketRepository;
+use App\Repository\ProductRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -43,29 +46,18 @@ class MainPageControlller extends Controller
     }
 
     /**
-     * @Route("/user/{id}", name="get_user", requirements={"id":"\d+"})
+     * @Route("/user/{id}", requirements={"id":"\d+"})
      * @Method({"GET", "POST"})
      */
-    public function getBasketByUserId($id, BasketProductRepository $basketProductRepository)
+    public function getBasketProductsListByUserId($id, ProductRepository $productRepository, UserRepository $userRepository)
     {
-        #$user = $this->getDoctrine()->getRepository(User::class)->find($id);
-
-        $user_basket = $this->getDoctrine()
-            ->getRepository(Basket::class)
-            ->find($id);
-
-        if ($user_basket) {
-            //show busket for user{id}
-            $busketList = $basketProductRepository->getBasketList();
-            //var_dump($busketList);
-
+        $user = $userRepository->getUserById($id);
+        if ($user) {
+            $busketList = $productRepository->getBasketProductsListByUserId($id);
+            var_dump($busketList);
         } else {
-            $basket = new Basket();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($basket);
-            $entityManager->flush();
+            return new Response("<h1>User with such id doesn't exist!</h1>");
 
-            return $this->redirectToRoute('cart_list');
         }
         return new Response();
     }
