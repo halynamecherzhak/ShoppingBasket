@@ -13,7 +13,9 @@ use App\Entity\BasketProduct;
 use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\BasketRepository;
+use Symfony\Component\HttpFoundation\Response;
 use App\Repository\BasketProductRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -21,50 +23,65 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class BasketController extends Controller
 {
     /**
-     * @Route("/basket" , name="cart_list")
+     * @Route("/basket/{userId}" , name="cart_list")
      *
      * @param BasketProductRepository $repository
      * @return \Symfony\Component\HttpFoundation\Response
+     * @param $userId
+     * @param UserRepository $userRepository
      */
-    public function index(BasketProductRepository $repository)
+    public function index($userId, BasketProductRepository $repository, UserRepository $userRepository)
     {
-        $price=0;
-        array_map(function ($item) use(&$price)
-        {
-            $price += $item['price'];
-            return $price;
-        }, $repository->getBasketList());
+        $user = $userRepository->getUserById($userId);
+        if ($user) {
 
-        $data = $repository->getBasketList();
-        array_push($data,"totalPrice",$price );
+            $price = 0;
+            array_map(function ($item) use (&$price) {
+                $price += $item['price'];
+                return $price;
+            }, $repository->getBasketProductsListByUserId($userId));
 
-        print_r($data);
+            $data = $repository->getBasketProductsListByUserId($userId);
+            array_push($data, "totalPrice", $price);
+
+            print_r($data);
+        } else {
+            return new Response("<h1>User with such id doesn't exist!</h1>");
+        }
 
         return $this->render('cart/cart.html.twig', array('busketList' => $data, 'price' => $price));
     }
 
     /**
-     * @Route("/cart/add/{basketId}/{productId}", name="shopping_basket",requirements={"basketId":"\d+"},requirements={"productId":"\d+"})
+     * @Route("/cart/add/{basketId}/{productId}/{userId}", name="shopping_basket")
      * @Method({"GET", "POST"})
      *
      * @param $basketId
      * @param $productId
+     * @param $userId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductToBasket($basketId, $productId)
+    public function addProductToBasket($basketId, $productId, $userId, UserRepository $userRepository)
     {
-        /** @var BasketProductRepository $basketProductRepo */
-        $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
+        $user = $userRepository->getUserById($userId);
+        if ($user) {
 
-        $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
+            /** @var BasketProductRepository $basketProductRepo */
+            $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
 
-        $basketProduct->addQuantity();
+            $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($basketProduct);
-        $em->flush();
+            $basketProduct->addQuantity();
 
-        return $this->redirectToRoute('cart_list');
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($basketProduct);
+            $em->flush();
+
+            return $this->redirectToRoute('cart_list/{userId}');
+        } else {
+
+            return new Response("<h1>User with such id doesn't exist!</h1>");
+        }
     }
 
     /**

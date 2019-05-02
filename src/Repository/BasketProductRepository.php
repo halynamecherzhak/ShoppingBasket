@@ -5,9 +5,11 @@ namespace App\Repository;
 
 use App\Entity\Basket;
 use App\Entity\Product;
+use App\Entity\User;
 use App\Entity\BasketProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Query\Expr\Join;
 
 
 /**
@@ -103,4 +105,17 @@ class BasketProductRepository extends ServiceEntityRepository
         }
         return $existingProduct;
     }
+
+    public function  getBasketProductsListByUserId($userId){
+        return $this->createQueryBuilder('bp')
+            ->select('p.name, p.price, bp.quantity')
+            ->innerJoin(Product::class,'p',Join::WITH,'p.id = bp.product')
+            ->innerJoin(Basket::class,'b',Join::WITH,'b.id = bp.basket')
+            ->innerJoin(User::class,'u',Join::WITH,'u.id = b.user')
+            ->where("u.id = :userId")
+            ->setParameter("userId", $userId)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

@@ -30,16 +30,4 @@ class ProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
-    public function  getBasketProductsListByUserId($id){
-        return $this->createQueryBuilder('p')
-            ->select('p.name, p.price, bp.quantity')
-            ->innerJoin(BasketProduct::class,'bp',Join::WITH,'p.id = bp.product')
-            ->innerJoin(Basket::class,'b',Join::WITH,'b.id = bp.basket')
-            ->innerJoin(User::class,'u',Join::WITH,'u.id = b.user')
-            ->where("u.id = :id")
-            ->setParameter("id", $id)
-            ->getQuery()
-            ->getResult();
-    }
 }
