@@ -8,7 +8,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Basket;
 use App\Entity\BasketProduct;
+use App\Entity\Product;
 use App\Repository\BasketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,14 +33,15 @@ class BasketController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @param UserRepository $userRepository
      */
-    public function index( BasketProductRepository $repository, UserRepository $userRepository)
+    public function index(BasketProductRepository $repository, UserRepository $userRepository)
     {
-        $userId =  $this->getCurrentUserId();
+        $userId = $this->getCurrentUserId();
         $user = $userRepository->getUserById($userId);
-        if ($user) {
-
+        if ($user)
+        {
             $price = 0;
-            array_map(function ($item) use (&$price) {
+            array_map(function ($item) use (&$price)
+            {
                 $price += $item['price'];
                 return $price;
             }, $repository->getBasketProductsListByUserId($userId));
@@ -47,7 +50,9 @@ class BasketController extends AbstractController
             array_push($data, "totalPrice", $price);
             print_r($data);
 
-        } else {
+        }
+        else
+        {
             return new Response("<h1>User with such id doesn't exist!</h1>");
         }
         return $this->render('cart/cart.html.twig', array('busketList' => $data, 'price' => $price));
@@ -60,11 +65,15 @@ class BasketController extends AbstractController
      * @param $productId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductToBasket($productId)
+    public function addProductToBasket($productId, UserRepository $userRepository)
     {
         $userId = $this->getCurrentUserId();
-        $basketId =  $this->getCurrentUserId();
-        if ($userId) {
+        $basketId = $this->getCurrentUserId();
+        $result = null;
+
+        $basket = $this->getDoctrine()->getRepository(Basket::class)->find($basketId);
+        if ($basket)
+        {
 
             /** @var BasketProductRepository $basketProductRepo */
             $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
@@ -77,10 +86,34 @@ class BasketController extends AbstractController
             $em->persist($basketProduct);
             $em->flush();
 
-            return $this->redirectToRoute('basketList');
-        } else {
+            $basketList = $this->redirectToRoute('basketList');
+            $badResponse = new Response("<h1>User with such id doesn't exist!</h1>");
 
-            return new Response("<h1>User with such id doesn't exist!</h1>");
+            return $result = $userId ? $basketList : $badResponse;
+        }
+        else
+        {
+
+            $user = $this->getUser();
+            $product = $this->getDoctrine()
+                ->getRepository(Product::class)
+                ->find($productId);
+            $cart = new Basket();
+            # set user whose own this cart
+            $cart->setUser($user);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($cart);
+            # flush it
+            $em->flush();
+
+            $ship = new BasketProduct();
+            $ship->addQuantity();
+            $ship->setProduct($product);
+            $ship->setBasket($cart);
+            # persist it and flush doctrine to save it
+            $em->persist($ship);
+            $em->flush();
+            return $this->redirectToRoute('basketList');
         }
     }
 

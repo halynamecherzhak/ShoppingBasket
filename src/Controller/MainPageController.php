@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MainPageController extends AbstractController
 {
-
     /**
      * @Route("/")
      * @Route("/products" , name="show products")
@@ -25,7 +24,8 @@ class MainPageController extends AbstractController
     public function index()
     {
         $products = $this->getDoctrine()->getRepository(Product::class)->findAll();
-        if (!$products) {
+        if (!$products)
+        {
             throw $this->createNotFoundException(
                 'No product found '
             );

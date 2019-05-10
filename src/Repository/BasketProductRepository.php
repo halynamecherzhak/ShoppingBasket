@@ -66,7 +66,8 @@ class BasketProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
 
-        if (!$existingProduct) {
+        if (!$existingProduct)
+        {
             $em = $this->getEntityManager();
 
             $basketProduct = new BasketProduct();
@@ -82,7 +83,8 @@ class BasketProductRepository extends ServiceEntityRepository
         return $existingProduct;
     }
 
-    public function  getBasketProductsListByUserId($userId){
+    public function  getBasketProductsListByUserId($userId)
+    {
         return $this->createQueryBuilder('bp')
             ->select('p.name, p.price, bp.quantity')
             ->innerJoin(Product::class,'p',Join::WITH,'p.id = bp.product')
