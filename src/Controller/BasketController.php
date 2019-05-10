@@ -8,30 +8,32 @@
 
 namespace App\Controller;
 
-use App\Entity\Basket;
 use App\Entity\BasketProduct;
-use App\Entity\Product;
-use App\Entity\User;
 use App\Repository\BasketRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\BasketProductRepository;
 use App\Repository\UserRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class BasketController extends Controller
+class BasketController extends AbstractController
 {
+    protected function getCurrentUserId()
+    {
+        return 1;
+    }
+
     /**
-     * @Route("/basket/{userId}" , name="cart_list")
+     * @Route("/basket" , name="basketList")
      *
      * @param BasketProductRepository $repository
      * @return \Symfony\Component\HttpFoundation\Response
-     * @param $userId
      * @param UserRepository $userRepository
      */
-    public function index($userId, BasketProductRepository $repository, UserRepository $userRepository)
+    public function index( BasketProductRepository $repository, UserRepository $userRepository)
     {
+        $userId =  $this->getCurrentUserId();
         $user = $userRepository->getUserById($userId);
         if ($user) {
 
@@ -43,33 +45,31 @@ class BasketController extends Controller
 
             $data = $repository->getBasketProductsListByUserId($userId);
             array_push($data, "totalPrice", $price);
-
             print_r($data);
+
         } else {
             return new Response("<h1>User with such id doesn't exist!</h1>");
         }
-
         return $this->render('cart/cart.html.twig', array('busketList' => $data, 'price' => $price));
     }
 
     /**
-     * @Route("/cart/add/{basketId}/{productId}/{userId}", name="shopping_basket")
+     * @Route("/cart/add/{productId}", name="shopping_basket")
      * @Method({"GET", "POST"})
      *
-     * @param $basketId
      * @param $productId
-     * @param $userId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductToBasket($basketId, $productId, $userId, UserRepository $userRepository)
+    public function addProductToBasket($productId)
     {
-        $user = $userRepository->getUserById($userId);
-        if ($user) {
+        $userId = $this->getCurrentUserId();
+        $basketId =  $this->getCurrentUserId();
+        if ($userId) {
 
             /** @var BasketProductRepository $basketProductRepo */
             $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
 
-            $basketProduct = $basketProductRepo->findOneOrCreate($basketId, $productId);
+            $basketProduct = $basketProductRepo->findOneProductBasketOrCreateNewOne($basketId, $productId);
 
             $basketProduct->addQuantity();
 
@@ -77,7 +77,7 @@ class BasketController extends Controller
             $em->persist($basketProduct);
             $em->flush();
 
-            return $this->redirectToRoute('cart_list/{userId}');
+            return $this->redirectToRoute('basketList');
         } else {
 
             return new Response("<h1>User with such id doesn't exist!</h1>");
@@ -85,18 +85,16 @@ class BasketController extends Controller
     }
 
     /**
-     * @Route("/product/delete/{id}", name="product_delete")
+     * @Route("/product/delete/{productId}", name="product_delete")
      *
-     * @param $id
+     * @param $productId
      * @param BasketProductRepository $repository
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function delete($id, BasketProductRepository $repository)
+    public function deleteProductFromBasket($productId, BasketProductRepository $repository)
     {
-        $busketList = $repository->deleteProductFromBasketProduct($id);
-
+        $busketList = $repository->deleteProductFromBasketProduct($productId);
         return $this->redirectToRoute('cart_list');
-
     }
 
     /**
@@ -112,5 +110,4 @@ class BasketController extends Controller
         $busketList = $basketRepository->deleteBasket();
         return $this->render('cart/cart.html.twig', array('busketList' => $busketList));
     }
-
 }

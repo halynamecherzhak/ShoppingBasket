@@ -22,15 +22,6 @@ class BasketRepository extends ServiceEntityRepository
         parent::__construct($registry, Basket::class);
     }
 
-    public function getBasketUser()
-    {
-        return $this->createQueryBuilder('b')
-            ->select(['b.id', 'u.userName'])
-            ->innerJoin(User::class, 'u', Join::WITH, 'u.id = b.user')
-            ->getQuery()
-            ->getResult();
-    }
-
     public function deleteBasket()
     {
         return $this->createQueryBuilder('b')
@@ -38,7 +29,6 @@ class BasketRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
 
     /**
      * @Route("/user/{id}", name="get_user", requirements={"id":"\d+"})
@@ -57,9 +47,7 @@ class BasketRepository extends ServiceEntityRepository
             //show busket for user{id}
             $busketList = $basketProductRepository->getBasketList();
             var_dump($busketList);
-
         }
         return new Response();
     }
-
 }

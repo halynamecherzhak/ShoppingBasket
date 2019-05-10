@@ -23,11 +23,10 @@
                     <td>{{ item.name }}</td>
                     <td>{{ item.description }}</td>
                     <td>{{ item.price }}</td>
-                    <td></td>
-                    <td></td>
+
                     <td>
                         <p>
-                            <a href="{{ url('cart_list', {'id':item.getId()}) }}" class="btn btn-primary">Add to Basket</a>
+                            <a href="{{ url('show products',{'productId':item.getId()}) }}" class="btn btn-primary">Add to Basket</a>
                         </p>
                     </td>
                 </tr>
