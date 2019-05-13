@@ -11,6 +11,7 @@ namespace App\Controller;
 use App\Entity\Basket;
 use App\Entity\BasketProduct;
 use App\Entity\Product;
+use App\Entity\User;
 use App\Repository\BasketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -65,56 +66,33 @@ class BasketController extends AbstractController
      * @param $productId
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductToBasket($productId, UserRepository $userRepository)
+    public function addProductToBasket($productId, BasketRepository $basketRepository)
     {
         $userId = $this->getCurrentUserId();
         $basketId = $this->getCurrentUserId();
-        $result = null;
 
         $basket = $this->getDoctrine()->getRepository(Basket::class)->find($basketId);
-        if ($basket)
+        $em = $this->getDoctrine()->getManager();
+
+        if (!$basket)
         {
-
-            /** @var BasketProductRepository $basketProductRepo */
-            $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
-
-            $basketProduct = $basketProductRepo->findOneProductBasketOrCreateNewOne($basketId, $productId);
-
-            $basketProduct->addQuantity();
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($basketProduct);
-            $em->flush();
-
-            $basketList = $this->redirectToRoute('basketList');
-            $badResponse = new Response("<h1>User with such id doesn't exist!</h1>");
-
-            return $result = $userId ? $basketList : $badResponse;
-        }
-        else
-        {
-
             $user = $this->getUser();
-            $product = $this->getDoctrine()
-                ->getRepository(Product::class)
-                ->find($productId);
+            $user = $em->getReference(User::class, $userId);
             $cart = new Basket();
-            # set user whose own this cart
             $cart->setUser($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($cart);
-            # flush it
             $em->flush();
-
-            $ship = new BasketProduct();
-            $ship->addQuantity();
-            $ship->setProduct($product);
-            $ship->setBasket($cart);
-            # persist it and flush doctrine to save it
-            $em->persist($ship);
-            $em->flush();
-            return $this->redirectToRoute('basketList');
         }
+
+        /** @var BasketProductRepository $basketProductRepo */
+        $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);
+        $basketProduct = $basketProductRepo->findOneProductBasketOrCreateNewOne($basketId, $productId);
+        $basketProduct->addQuantity();
+
+        $em->persist($basketProduct);
+        $em->flush();
+        return  $this->redirectToRoute('basketList');
     }
 
     /**
