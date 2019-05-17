@@ -10,7 +10,6 @@ namespace App\Controller;
 
 use App\Entity\Basket;
 use App\Entity\BasketProduct;
-use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\BasketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -49,14 +48,12 @@ class BasketController extends AbstractController
 
             $data = $repository->getBasketProductsListByUserId($userId);
             array_push($data, "totalPrice", $price);
-            print_r($data);
-
         }
         else
         {
             return new Response("<h1>User with such id doesn't exist!</h1>");
         }
-        return $this->render('cart/cart.html.twig', array('busketList' => $data, 'price' => $price));
+        return $this->render('cart/cart.html.twig', array('data'=> $data));
     }
 
     /**

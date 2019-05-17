@@ -4,9 +4,10 @@
 {% block body %}
     <h1>Shopping Basket</h1>
     <a href="/products">Go Back</a>
-    {% if busketList %}
+    {% if data %}
         <table id="articles" class="table table-striped">
             <thead>
+            <td> {{ data|json_encode()  }}</td>
             <tr>
                 <th>Name</th>
                 <th>Price</th>
@@ -14,15 +15,11 @@
             </tr>
             </thead>
             <tbody>
-            {% for item in busketList %}
-                <tr>
-                    {#<td> {{ item }}</td>#}
-                    {#<td>{{ item.Price()}}</td>#}
-                    {#<td>#}
-                        {#<a href="/product/delete/{{item.getId()}}" class="btn btn-danger delete-article" >Delete</a>#}
-                    {#</td>#}
-                </tr>
-            {% endfor %}
+            {#{% for item in data %}#}
+                {#<tr>#}
+                    {#<td> {{ data}}</td>#}
+                {#</tr>#}
+                {#{% endfor %}#}
             </tbody>
         </table>
     {% else %}

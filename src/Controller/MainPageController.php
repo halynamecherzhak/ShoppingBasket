@@ -11,13 +11,20 @@ namespace App\Controller;
 use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-#use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class MainPageController extends AbstractController
 {
     /**
-     * @Route("/")
+     * @Route("/", name="welcome")
+     */
+    public function showAction()
+    {
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
      * @Route("/products" , name="show products")
      * @return Response
      */
@@ -31,5 +38,14 @@ class MainPageController extends AbstractController
             );
         }
         return $this->render('products/products.html.twig', array('products' => $products));
+    }
+
+    /**
+     * @Route("/admin")
+     * @return Response
+     */
+    public function admin()
+    {
+        return new Response('<h1>HELOO ADMIN</h1>');
     }
 }
