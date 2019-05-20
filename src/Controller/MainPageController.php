@@ -38,14 +38,6 @@ class MainPageController extends AbstractController
             );
         }
         return $this->render('products/products.html.twig', array('products' => $products));
-    }
 
-    /**
-     * @Route("/admin")
-     * @return Response
-     */
-    public function admin()
-    {
-        return new Response('<h1>HELOO ADMIN</h1>');
     }
 }

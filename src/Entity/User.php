@@ -24,7 +24,7 @@ class User implements UserInterface
      */
     private $userName;
 
-    /**user
+    /**
      * @ORM\Column(type="string", length=255)
      */
     private $address;

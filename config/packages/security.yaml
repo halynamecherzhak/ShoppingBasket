@@ -1,19 +1,10 @@
 security:
     encoders:
-            # use your user class name here
-        App\Entity\User:
-            # bcrypt or argon2i are recommended
-            # argon2i is more secure, but requires PHP 7.2 or the Sodium extension
-            algorithm: bcrypt
-            cost: 12
+         App\Entity\User: bcrypt
+
     providers:
-      in_memory: { memory: ~ }
-#      in_memory:
-#        memory:
-#          users:
-#            halyna:
-#              password: qwerty
-#              roles: 'ROLE_USER'
+         database_users:
+            entity: {class: App\Entity\User, property: email}
 
     firewalls:
         dev:
@@ -21,8 +12,18 @@ security:
             security: false
         main:
             anonymous: true
+            pattern: ^/
 
+            form_login:
+                login_path: security_login
+                check_path: security_login
+                csrf_token_generator: security.csrf.token_manager
+                default_target_path: show products
+
+            logout:
+                path: security_logout
+                target:  show products
 
     access_control:
-#         - { path: ^/login, roles: ROLE_USER }
-#         - { path: ^/register, roles: ROLE_USER }
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }

@@ -7,18 +7,19 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Login</div>
                     <div class="panel-body">
-                        <form class="form-horizontal" role="form" method="POST" action="{{ path('security_login_check') }}">
-                            {% if error %}
-                                <div class="alert alert-danger">
-                                    {{ error.messageKey|trans(error.messageData) }}
-                                </div>
-                            {% endif %}
+                        {% if error %}
+                            <div class="alert alert-danger">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </div>
+                        {% endif %}
 
+
+                        <form class="form-horizontal" role="form" method="POST" action="{{ path('security_login') }}">
                             <div class="form-group">
                                 <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="_email" value="{{ last_username }}">
+                                    <input id="email" type="email" class="form-control" name="_username" value="{{ last_username }}">
                                 </div>
                             </div>
 
@@ -37,6 +38,8 @@
                                     </button>
                                 </div>
                             </div>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                            <input type="hidden" name="_target_path" value="{{ app.request.get('redirect_to' ) }}">
                         </form>
                     </div>
                 </div>

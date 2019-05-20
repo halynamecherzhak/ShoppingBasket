@@ -28,29 +28,6 @@ class Basket
      */
     private $basketProducts;
 
-//    /**
-//     * @ORM\Column(type="decimal")
-//     */
-//    private $total_price;
-//
-//    /**
-//     * @return mixed
-//     */
-//    public function getTotalPrice()
-//    {
-//        return $this->total_price;
-//    }
-//
-//    /**
-//     * @param mixed $total_price
-//     * @return Basket
-//     */
-//    public function setTotalPrice($total_price)
-//    {
-//        $this->total_price = $total_price;
-//        return $this;
-//    }
-
     public function getId(): ?int
     {
         return $this->id;
