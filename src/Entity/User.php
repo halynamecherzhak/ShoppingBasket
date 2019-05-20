@@ -107,28 +107,28 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getBasket()
-    {
-        return $this->basket;
-    }
-
-    /**
-     * @param mixed $basket
-     * @return User
-     */
-    public function setBasket($basket)
-    {
-        $this->basket = $basket;
-        return $this;
-    }
-
-    /**
-     * @ORM\OneToOne(targetEntity="Basket", mappedBy="basket")
-     */
-    private $basket;
+//    /**
+//     * @return mixed
+//     */
+//    public function getBasket()
+//    {
+//        return $this->basket;
+//    }
+//
+//    /**
+//     * @param mixed $basket
+//     * @return User
+//     */
+//    public function setBasket($basket)
+//    {
+//        $this->basket = $basket;
+//        return $this;
+//    }
+//
+//    /**
+//     * @ORM\OneToOne(targetEntity="Basket", mappedBy="basket")
+//     */
+//    private $basket;
 
     public function getId(): ?int
     {

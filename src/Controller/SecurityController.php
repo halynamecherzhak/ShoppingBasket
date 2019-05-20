@@ -2,53 +2,41 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /**
-     * SecurityController constructor.
-     * @param \Twig_Environment $twig
+     * @Route("/login", name="app_login")
      */
-    public  function  __construct(\Twig_Environment $twig)
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        $this-> twig = $twig;
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
+
+        return $this->render('security/login.html.twig', [
+            'last_username' => $lastUsername,
+            'error' => $error
+        ]);
     }
 
     /**
-     * @Route("/login", name="security_login")
-     * @return Response
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @Route("/admin", name="admin")
      */
-    public function loginAction(Request $request)
+    public function welcome()
     {
-        $helper = $this->get('security.authentication_utils');
-
-        return $this->render(
-            'auth/login.html.twig',
-            array(
-                'last_username' => $helper->getLastUsername(),
-                'error'         => $helper->getLastAuthenticationError(),
-            )
-        );
+        return  $this->redirectToRoute('show products');
     }
 
     /**
-     * @Route("/login_check", name="security_login_check")
-     */
-    public function loginCheckAction()
-    {
-        return $this->redirectToRoute('show products');
-    }
-
-    /**
-     * @Route("/logout", name="security_logout")
-     */
+    * @Route("/logout", name="security_logout")
+    */
     public function logoutAction()
     {
 

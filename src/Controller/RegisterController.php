@@ -33,7 +33,7 @@ class RegisterController extends Controller
             $em->persist($user);
             $em->flush();
 
-            return $this->redirectToRoute('security_login');
+            return $this->redirectToRoute('show products');
         }
 
         return $this->render('auth/register.html.twig', [
