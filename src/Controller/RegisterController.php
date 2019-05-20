@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class RegisterController extends Controller
 {
+
     /**
      * @Route("/register", name="register")
      */
