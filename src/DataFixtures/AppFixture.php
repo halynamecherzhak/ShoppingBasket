@@ -23,7 +23,6 @@ class AppFixture extends Fixture
       $user->setEmail('oksana.osmak@gmail.com');
       $user->setPhone('345');
       $user->setAddress('bla');
-      $user->setRole('user');
       $user->setPassword($this->passwordEncoder->encodePassword($user,'qwerty'));
 
       $manager->persist($user);

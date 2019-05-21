@@ -29,4 +29,13 @@ class BasketRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function  getBasketIdByUserId($userId){
+        return $this->createQueryBuilder('b')
+            ->select('b.id')
+            ->where('b.user = :userId')
+            ->setParameter("userId", $userId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

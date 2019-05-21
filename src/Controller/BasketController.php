@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Basket;
 use App\Entity\BasketProduct;
+use App\Entity\Product;
 use App\Entity\User;
 use App\Repository\BasketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,11 +22,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class BasketController extends AbstractController
 {
-    protected function getCurrentUserId()
-    {
-        return 1;
-    }
-
     /**
      * @Route("/basket" , name="basketList")
      *
@@ -35,8 +31,9 @@ class BasketController extends AbstractController
      */
     public function index(BasketProductRepository $repository, UserRepository $userRepository)
     {
-        $userId = $this->getCurrentUserId();
-        $user = $userRepository->getUserById($userId);
+       $user = $this->get('security.token_storage')->getToken()->getUser();
+       $userId = $this->getUser()->getId();
+
         if ($user)
         {
             $price = 0;
@@ -65,22 +62,20 @@ class BasketController extends AbstractController
      */
     public function addProductToBasket($productId, BasketRepository $basketRepository)
     {
-        $userId = $this->getCurrentUserId();
-        $basketId = $this->getCurrentUserId();
-
-        $basket = $this->getDoctrine()->getRepository(Basket::class)->find($basketId);
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $userId = $this->getUser()->getId();
+        $existUserBasket =  $this->getDoctrine()->getRepository(Basket::class)->find($userId);
         $em = $this->getDoctrine()->getManager();
 
-        if (!$basket)
+        if(!$existUserBasket)
         {
-            $user = $this->getUser();
-            $user = $em->getReference(User::class, $userId);
-            $cart = new Basket();
-            $cart->setUser($user);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($cart);
+            $basket = new Basket();
+            $basket->setUser($user);
+            $em->persist($basket);
             $em->flush();
         }
+
+        $basketId = $basketRepository->getBasketIdByUserId($userId);
 
         /** @var BasketProductRepository $basketProductRepo */
         $basketProductRepo = $this->getDoctrine()->getRepository(BasketProduct::class);

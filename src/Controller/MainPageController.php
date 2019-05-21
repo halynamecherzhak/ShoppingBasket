@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainPageController extends AbstractController
 {
     /**
-     * @Route("/", name="welcome")
+     * @Route("/")
      */
     public function showAction()
     {
