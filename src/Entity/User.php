@@ -40,36 +40,9 @@ class User implements UserInterface
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $role;
-
-    /**
-     * @Assert\Length(max=4096)
-     */
-    private $plainPassword;
-
-    /**
      * @ORM\Column(type="string", length=64)
      */
     private $password;
-    /**
-     * @return mixed
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param mixed $role
-     * @return User
-     */
-    public function setRole($role)
-    {
-        $this->role = $role;
-        return $this;
-    }
 
     /**
      * @return mixed
@@ -86,24 +59,6 @@ class User implements UserInterface
     public function setPassword($password)
     {
         $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-   public function getPlainPassword()
-    {
-        return $this->plainPassword;
-    }
-
-    /**
-     * @param mixed $plainPassword
-     * @return User
-     */
-    public function setPlainPassword($plainPassword)
-    {
-        $this->plainPassword = $plainPassword;
         return $this;
     }
 

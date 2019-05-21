@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Register{% endblock %}
+
 {% block body %}
     <div class="container">
         <div class="row">
@@ -7,40 +9,40 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">Register</div>
                     <div class="panel-body">
-                        {{ form_start(form) }}
+                        {{ form_start(registrationForm) }}
                         <div class="form_group">
                             <div class="col-md-8 col-md-offset-2">
-                                {{ form_row(form.userName, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_row(registrationForm.userName, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
 
                         <div class="form_group">
                             <div class="col-md-8 col-md-offset-2">
-                                {{ form_row(form.address, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_row(registrationForm.address, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
 
                         <div class="form_group">
                             <div class="col-md-8 col-md-offset-2">
-                                {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_row(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
 
                         <div class="form_group">
                             <div class="col-md-8 col-md-offset-2">
-                                {{ form_row(form.phone, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_row(registrationForm.phone, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
 
                         <div class="form_group">
                             <div class="col-md-8 col-md-offset-2">
-                                {{ form_row(form.password.first, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_row(registrationForm.password.first, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
 
                         <div class="form_group">
                             <div class="col-md-8 col-md-offset-2">
-                                {{ form_row(form.password.second, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_row(registrationForm.password.second, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
 
@@ -51,7 +53,7 @@
                                 </button>
                             </div>
                         </div>
-                        {{ form_end(form) }}
+                        {{ form_end(registrationForm) }}
                     </div>
                 </div>
             </div>
