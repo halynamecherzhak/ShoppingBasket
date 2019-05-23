@@ -29,4 +29,26 @@ class UserRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public  function  getUserCreds($email, $password){
+        return $this->createQueryBuilder('u')
+            ->select('u.email, u.password')
+            ->andWhere('u.email = :email')
+            ->andWhere('u.password = :password')
+            ->setParameter("email", $email)
+            ->setParameter("password", $password)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOneByUsernameOrEmail($email)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u.password')
+            ->andWhere('u.email = :email')
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

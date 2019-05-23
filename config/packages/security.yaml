@@ -1,32 +1,22 @@
 security:
     encoders:
          App\Entity\User: bcrypt
-
     providers:
-         database_users:
-            entity: {class: App\Entity\User, property: email}
-
+#        in_memory:
+#            memory: ~
+            app_user_provider:
+                entity:
+                    class: App\Entity\User
+                    property: email
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
-            pattern: ^/
-
-#            form_login:
-#                login_path: security_login
-#                check_path: security_login
-#                csrf_token_generator: security.csrf.token_manager
-#                default_target_path: show products
-
-            logout:
-                path: security_logout
-                target:  show products
-            guard:
-                authenticators:
-                    - App\Security\LoginFormAuthenticator
-
-    access_control:
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        # - { path: ^/profile, roles: ROLE_USER }
+             anonymous: ~
+             logout:
+                 path: security_logout
+#                 target:  show products
+             guard:
+                 authenticators:
+                        - App\Security\LoginFormAuthenticator

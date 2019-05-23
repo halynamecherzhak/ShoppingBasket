@@ -11,6 +11,15 @@
 
 </head>
 <body>
+<header class="header">
+    <h1 class="logo">Shopping Basket</h1>
+        {% if is_granted('ROLE_USER') %}
+            <li><a href="{{ path('security_logout') }}">Logout</a></li>
+        {% else %}
+            <a href="/login" class="btn btn-info"> You need to login to see the list 😜😜 >></a><br>
+            <a href="/register" class="btn btn-info"> or create new account 😜😜 >></a>
+        {% endif %}
+</header>
 <div class="container">
     {% block body %}{% endblock %}
 </div>

@@ -44,6 +44,19 @@ class User implements UserInterface
      */
     private $password;
 
+    private $plainPassword;
+
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+        $this->password = null;
+    }
+
     /**
      * @return mixed
      */
@@ -91,10 +104,10 @@ class User implements UserInterface
         return $this->id;
     }
 
-    public function getUserName(): ?string
-    {
-        return $this->userName;
-    }
+//    public function getUserName(): ?string
+//    {
+//        return $this->userName;
+//    }
 
     public function setUserName(string $userName): self
     {
@@ -180,6 +193,11 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        return null;
+        $this->plainPassword = null;
+    }
+
+    public function getUsername()
+    {
+        return $this->email;
     }
 }

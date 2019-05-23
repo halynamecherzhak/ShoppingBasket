@@ -10,8 +10,6 @@ namespace App\Controller;
 
 use App\Entity\Basket;
 use App\Entity\BasketProduct;
-use App\Entity\Product;
-use App\Entity\User;
 use App\Repository\BasketRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,7 +43,9 @@ class BasketController extends AbstractController
 
             $data = $repository->getBasketProductsListByUserId($userId);
             array_push($data, "totalPrice", $price);
+            //dd($data);
         }
+
         else
         {
             return new Response("<h1>User with such id doesn't exist!</h1>");

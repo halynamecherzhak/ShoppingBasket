@@ -15,11 +15,16 @@
             </tr>
             </thead>
             <tbody>
-            {#{% for item in data %}#}
+            {% for item in data %}
                 {#<tr>#}
-                    {#<td> {{ data}}</td>#}
+                    {#<td> {{ item}}</td>#}
                 {#</tr>#}
-                {#{% endfor %}#}
+                {% for it in item %}
+                    <tr>
+                    <td> {{ it}}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
             </tbody>
         </table>
     {% else %}
