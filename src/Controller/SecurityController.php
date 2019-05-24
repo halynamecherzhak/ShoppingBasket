@@ -48,10 +48,9 @@ class SecurityController extends AbstractController
     /**
      * @Route("/check_login", name="check_login")
      */
-    public function checkLogin( UserRepository $userRepository,Request $request)
+    public function checkLogin(Request $request)
     {
-        $username = $request->get('_username');
-        $user = $userRepository->findOneByUsernameOrEmail($username);
+
     }
 
     /**

@@ -19,7 +19,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Security;
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -28,13 +28,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $em;
     private $router;
     private  $urlGenerator;
+    private $passwordEncoder;
 
-    public function __construct(FormFactoryInterface $formFactory, EntityManagerInterface $entityManager, RouterInterface $router,  UrlGeneratorInterface $urlGenerator)
+    public function __construct(FormFactoryInterface $formFactory, EntityManagerInterface $entityManager, RouterInterface $router,  UrlGeneratorInterface $urlGenerator,  UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->formFactory = $formFactory;
         $this->em = $entityManager;
         $this->router = $router;
         $this->urlGenerator = $urlGenerator;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     public function supports(Request $request)
@@ -72,12 +74,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        $password = $credentials['_password'];
-
-        if ($password == 'pavlo') {
-            return true;
-        }
-        return false;
+        return $this->passwordEncoder->isPasswordValid($user, $credentials['_password']);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)

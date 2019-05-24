@@ -16,7 +16,9 @@ security:
              anonymous: ~
              logout:
                  path: security_logout
-#                 target:  show products
              guard:
                  authenticators:
                         - App\Security\LoginFormAuthenticator
+    access_control:
+            - { path: ^/admin, roles: ROLE_ADMIN }
+            - { path: ^/products, roles: ROLE_USER }

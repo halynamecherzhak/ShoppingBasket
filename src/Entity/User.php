@@ -46,6 +46,25 @@ class User implements UserInterface
 
     private $plainPassword;
 
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $roles = [];
+
+    public function getRoles()
+    {
+        $roles = $this->roles;
+
+        if (!in_array('ROLE_USER', $roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+        return $roles;
+    }
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+    }
+
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -152,26 +171,12 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * Returns the roles granted to the user.
-     *
-     *     public function getRoles()
-     *     {
-     *         return ['ROLE_USER'];
-     *     }
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
-    public function getRoles()
-    {
-        return [
-            'ROLE_USER'
-        ];
-    }
+//    public function getRoles()
+//    {
+//        return [
+//            'ROLE_USER'
+//        ];
+//    }
 
     /**
      * Returns the salt that was originally used to encode the password.
