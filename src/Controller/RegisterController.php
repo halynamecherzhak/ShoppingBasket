@@ -17,7 +17,6 @@ class RegisterController extends Controller
      * @Route("/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,LoginFormAuthenticator $authenticator,GuardAuthenticatorHandler $guardHandler): Response
-    //public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -31,6 +30,7 @@ class RegisterController extends Controller
                     $form->get('password')->getData()
                 )
             );
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();

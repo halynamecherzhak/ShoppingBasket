@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Form\LoginForm;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-//use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,9 +39,10 @@ class SecurityController extends AbstractController
     /**
      * @Route("/admin", name="admin")
      */
-    public function welcome()
+    public function welcome(UserRepository $userRepository)
     {
-        return new Response('<html><body>Admin page!</body></html>');
+        $usersCount = $userRepository->getUsersCount();
+        return new Response('Count of already registered users:' . $usersCount);
     }
 
     /**
@@ -50,7 +50,6 @@ class SecurityController extends AbstractController
      */
     public function checkLogin(Request $request)
     {
-
     }
 
     /**
@@ -58,6 +57,5 @@ class SecurityController extends AbstractController
     */
     public function logoutAction()
     {
-        throw new \Exception('this should not be reached!');
     }
 }

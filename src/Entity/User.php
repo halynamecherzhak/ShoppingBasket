@@ -51,13 +51,9 @@ class User implements UserInterface
      */
     private $roles = [];
 
-    public function getRoles()
+    public function getRoles():array
     {
         $roles = $this->roles;
-
-        if (!in_array('ROLE_USER', $roles)) {
-            $roles[] = 'ROLE_USER';
-        }
         return $roles;
     }
     public function setRoles(array $roles)
@@ -123,11 +119,6 @@ class User implements UserInterface
         return $this->id;
     }
 
-//    public function getUserName(): ?string
-//    {
-//        return $this->userName;
-//    }
-
     public function setUserName(string $userName): self
     {
         $this->userName = $userName;
@@ -170,13 +161,6 @@ class User implements UserInterface
 
         return $this;
     }
-
-//    public function getRoles()
-//    {
-//        return [
-//            'ROLE_USER'
-//        ];
-//    }
 
     /**
      * Returns the salt that was originally used to encode the password.

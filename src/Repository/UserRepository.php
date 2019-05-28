@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Basket;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
@@ -20,35 +21,21 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function getUserById($id)
+//    public function getUserById($id)
+//    {
+//        return $this->createQueryBuilder('u')
+//            ->select('u.id')
+//            ->where('u.id = :id')
+//            ->setParameter("id", $id)
+//            ->getQuery()
+//            ->getResult();
+//    }
+
+    public function getUsersCount()
     {
         return $this->createQueryBuilder('u')
-            ->select('u.id')
-            ->where('u.id = :id')
-            ->setParameter("id", $id)
+            ->select('Count(u.id)')
             ->getQuery()
-            ->getResult();
-    }
-
-    public  function  getUserCreds($email, $password){
-        return $this->createQueryBuilder('u')
-            ->select('u.email, u.password')
-            ->andWhere('u.email = :email')
-            ->andWhere('u.password = :password')
-            ->setParameter("email", $email)
-            ->setParameter("password", $password)
-            ->getQuery()
-            ->getResult();
-    }
-
-    public function findOneByUsernameOrEmail($email)
-    {
-        return $this->createQueryBuilder('u')
-            ->select('u.password')
-            ->andWhere('u.email = :email')
-            ->setParameter('email', $email)
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
+            ->getSingleScalarResult();
     }
 }
