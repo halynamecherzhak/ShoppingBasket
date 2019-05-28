@@ -20,7 +20,7 @@ class Basket
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="User", inversedBy="basket")
+     * @ORM\OneToOne(targetEntity="User", inversedBy="id")
      */
     private $user;
 

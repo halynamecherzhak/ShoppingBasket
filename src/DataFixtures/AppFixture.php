@@ -24,6 +24,7 @@ class AppFixture extends Fixture
       $user->setPhone('345');
       $user->setAddress('bla');
       $user->setRoles(['ROLE_ADMIN']);
+      $user->setBasket($this->getRandomReference('basket'));
       $user->setPassword($this->passwordEncoder->encodePassword($user,'qwerty'));
 
       $manager->persist($user);

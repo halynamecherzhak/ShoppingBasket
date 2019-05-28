@@ -43,7 +43,6 @@ class BasketController extends AbstractController
 
             $data = $repository->getBasketProductsListByUserId($userId);
             array_push($data, "totalPrice", $price);
-            //dd($data);
         }
 
         else

@@ -111,6 +111,7 @@ class User implements UserInterface
 //    /**
 //     *
 //     * @ORM\OneToOne(targetEntity="Basket", mappedBy="basket")
+//     *
 //     */
 //    private $basket;
 
