@@ -18,17 +18,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 class GoogleAuthenticator extends SocialAuthenticator
 {
     private $clientRegistry;
     private $em;
     private $router;
+    private $urlGenerator;
 
-    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router)
+    public function __construct(ClientRegistry $clientRegistry, EntityManagerInterface $em, RouterInterface $router, urlGeneratorInterface $urlGenerator)
     {
         $this->clientRegistry = $clientRegistry;
         $this->em = $em;
         $this->router = $router;
+        $this->urlGenerator = $urlGenerator;
     }
 
     public function supports(Request $request)
@@ -52,18 +56,20 @@ class GoogleAuthenticator extends SocialAuthenticator
         $user = $this->em->getRepository('App:User')
             ->findOneBy(['email' => $email]);
 
+
         if (!$user) {
             $user = new User();
             $user->setEmail($googleUser->getEmail());
             $user->setUserName($googleUser->getName());
-            dd($googleUser);
-            //$user->setRoles('Role_user');
-//            $user->setFullname($googleUser->getName());
-//            $user->setCreatedAt(new \DateTime(date('Y-m-d H:i:s')));
+
+            $user->setRoles(['ROLE_USER']);
+            $user->setPhone('5');
+            $user->setAddress('tut');
+            $user->setPassword('asdf');
+
             $this->em->persist($user);
             $this->em->flush();
         }
-
         return $user;
     }
 
@@ -115,7 +121,7 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationFailure(Request $request, \Symfony\Component\Security\Core\Exception\AuthenticationException $exception)
     {
-        // TODO: Implement onAuthenticationFailure() method.
+        return new RedirectResponse($this->urlGenerator->generate('security_login'));
     }
 
     /**
@@ -135,6 +141,6 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, \Symfony\Component\Security\Core\Authentication\Token\TokenInterface $token, $providerKey)
     {
-        // TODO: Implement onAuthenticationSuccess() method.
+        return new RedirectResponse($this->urlGenerator->generate('show products'));
     }
 }
