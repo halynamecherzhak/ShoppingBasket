@@ -8,6 +8,7 @@
         "knpuniversity/oauth2-client-bundle": "^1.28",
         "league/oauth2-facebook": "^2.0",
         "league/oauth2-google": "^3.0",
+        "riskio/oauth2-auth0": "^2.1",
         "sensio/framework-extra-bundle": "^5.3",
         "symfony/asset": "4.2.*",
         "symfony/console": "4.2.*",

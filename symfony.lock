@@ -189,6 +189,9 @@
     "ralouphie/getallheaders": {
         "version": "2.0.5"
     },
+    "riskio/oauth2-auth0": {
+        "version": "v2.1.0"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
