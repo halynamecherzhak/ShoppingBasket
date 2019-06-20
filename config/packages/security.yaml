@@ -16,8 +16,8 @@ security:
                  path: security_logout
              guard:
                  authenticators:
-#                      - App\Security\LoginFormAuthenticator
                        - App\Security\GoogleAuthenticator
+                       #- App\Security\OAuthAuthenticator
     access_control:
             - { path: ^/admin, roles: ROLE_ADMIN }
             - { path: ^/products, roles: [ROLE_USER, ROLE_ADMIN] }
@@ -33,26 +33,3 @@ knpu_oauth2_client:
             # a route name you'll create
             redirect_route: connect_google_check
             redirect_params: {}
-
-#        token:
-#            # must be "google" - it activates that type!
-#            type: token
-#            # add and configure client_id and client_secret in parameters.yml
-#            client_id: '%env(resolve:CLIENT_ID)%'
-#            client_secret: '%env(resolve:CLIENT_SECRET)%'
-#            # a route name you'll create
-#            redirect_route: connect_check
-#            redirect_params: {}
-        auth0:
-            # must be "auth0" - it activates that type!
-            type: auth0
-            # add and configure client_id and client_secret in parameters.yml
-            client_id: '%env(OAUTH_AUTH0_CLIENT_ID)%'
-            client_secret: '%env(OAUTH_AUTH0_CLIENT_SECRET)%'
-            # a route name you'll create
-            redirect_route: connect_auth0_check
-            redirect_params: {}
-            # Your Auth0 domain/account, e.g. "mycompany" if your domain is "mycompany.auth0.com"
-            account: null
-            # whether to check OAuth2 "state": defaults to true
-            # use_state: true
