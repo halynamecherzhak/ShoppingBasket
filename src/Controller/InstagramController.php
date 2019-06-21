@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\Mapping\ReflectionEmbeddedProperty;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Flex\Response;
@@ -33,14 +34,37 @@ class InstagramController extends  AbstractController
      */
     public  function  getLoginURL(){
          return $this->redirect( "https://api.instagram.com/oauth/authorize/?client_id=".$this->settings['clientID']."&redirect_uri=".$this->settings['redirectURI']."&response_type=code");
+         //return $this->redirect("https://api.instagram.com/oauth/authorize/?client_id=".$this->settings['clientID']."&redirect_uri=".$this->settings['redirectURI']."&response_type=token");
     }
 
-    /**
-     * @return string
-     * @Route("/callback")
-     */
-    public function callback(){
-        $code = $_GET['code'];
+//    /**
+//     * @return string
+//     * @Route("/callback")
+//     */
+//    public function callback(){
+//        $code = $_GET['code'];
+//        $postFileds = array(
+//            "client_id" => $this->settings['clientID'],
+//            "client_secret" => $this->settings['clientSecret'],
+//            "grant_type" => "authorization_code",
+//            "redirect_uri" => $this->settings['redirectURI'],
+//            "code" => $code
+//        );
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, "https://api.instagram.com/oauth/access_token");
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $postFileds);
+//        $response = curl_exec($ch);
+//
+//        curl_close($ch);
+//        $data = json_decode($response, true);
+//
+//        $accessToken = $data['access_token'];
+//        var_dump($accessToken);
+//
+//        return new Response("<pre>");
+//    }
+
+    public  function  getAccessTokenAndUserDetails($code){
         $postFileds = array(
             "client_id" => $this->settings['clientID'],
             "client_secret" => $this->settings['clientSecret'],
@@ -48,21 +72,30 @@ class InstagramController extends  AbstractController
             "redirect_uri" => $this->settings['redirectURI'],
             "code" => $code
         );
-
-        dd($postFileds);
-
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL,"https://api.instagram.com/oauth/access_token");
+        curl_setopt($ch, CURLOPT_URL, "https://api.instagram.com/oauth/access_token");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,0);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,0);
-        curl_setopt($ch, CURLOPT_PORT,1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postFileds);
         $response = curl_exec($ch);
         curl_close($ch);
-        //$data = json_decode($response, true);
+        $data = json_decode($response, true);
 
-        dd(json_decode($response,true));
+        return $data;
+    }
 
+    /**
+     * @Route("/callback")
+     */
+    public function callback(){
+        if(isset($_GET['error'])){
+            header('Location: security/login.php');
+        }
+        $data = $this->getAccessTokenAndUserDetails($_GET['code']);
+        //dd($data);
+        echo "<pre>";
+        //return  new Response("<pre>".var_dump($data));
+        return var_dump($data);
     }
 }
